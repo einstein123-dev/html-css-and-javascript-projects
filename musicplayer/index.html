@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Music Player</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script
+      src="https://kit.fontawesome.com/4f5d369260.js"
+      crossorigin="anonymous"
+    ></script>
+  </head>
+  <body>
+    <div class="container">
+      <div class="music-player">
+        <nav>
+          <div class="circle">
+            <i class="fa-solid fa-chevron-left"></i>
+          </div>
+          <div class="circle">
+            <i class="fa-solid fa-bars-staggered"></i>
+          </div>
+        </nav>
+
+        <img src="media/468-thumbnail.png" alt="Song Cover" class="song-img" />
+        <h1>THE GREATEST</h1>
+        <p>SIA</p>
+
+        <audio id="song">
+          <source src="media/The Greatest - Sia.m4a" type="audio/mp4" />
+        </audio>
+
+        <input type="range" value="0" id="progress" />
+
+        <div class="controls">
+          <div><i class="fa-solid fa-backward"></i></div>
+          <div><i class="fa-solid fa-play" id="ctrlIcon"></i></div>
+          <div><i class="fa-solid fa-forward"></i></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- JavaScript: keep in a separate script block or file -->
+    <script>
+      let progress = document.getElementById("progress");
+      let song = document.getElementById("song");
+      let ctrlIcon = document.getElementById("ctrlIcon");
+
+      // Wait for metadata to load before setting max duration
+      song.onloadedmetadata = function () {
+        progress.max = song.duration;
+        progress.value = song.currentTime;
+      };
+
+      // Play / Pause toggle
+      function playPause() {
+        if (ctrlIcon.classList.contains("fa-pause")) {
+          song.pause();
+          ctrlIcon.classList.remove("fa-pause");
+          ctrlIcon.classList.add("fa-play");
+        } else {
+          song.play();
+          ctrlIcon.classList.remove("fa-play");
+          ctrlIcon.classList.add("fa-pause");
+        }
+      }
+
+      ctrlIcon.onclick = playPause;
+
+      // Update progress bar as song plays
+      song.addEventListener("timeupdate", () => {
+        progress.value = song.currentTime;
+      });
+
+      // Allow user to change song position with slider
+      progress.onchange = function () {
+        song.currentTime = progress.value;
+        song.play();
+        ctrlIcon.classList.remove("fa-play");
+        ctrlIcon.classList.add("fa-pause");
+      };
+    </script>
+  </body>
+</html>
